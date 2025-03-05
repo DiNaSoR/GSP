@@ -1,0 +1,2 @@
+# GSP
+Games Settings Project
