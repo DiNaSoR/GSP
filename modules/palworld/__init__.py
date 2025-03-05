@@ -1,0 +1,1 @@
+# Palworld module for Game Settings Editor 

@@ -1,0 +1,507 @@
+[
+  {
+    "name": "Difficulty",
+    "category": "General",
+    "type": "enum",
+    "options": [
+      "None",
+      "Casual",
+      "Normal",
+      "Hard"
+    ],
+    "default": "None",
+    "description": "Sets the game difficulty level. 'None' uses custom settings."
+  },
+  {
+    "name": "DayTimeSpeedRate",
+    "category": "General",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Adjusts how fast daytime progresses in the game."
+  },
+  {
+    "name": "NightTimeSpeedRate",
+    "category": "General",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Adjusts how fast nighttime progresses in the game."
+  },
+  {
+    "name": "ExpRate",
+    "category": "General",
+    "type": "float",
+    "min": 0.1,
+    "max": 100.0,
+    "default": "1.000000",
+    "description": "Multiplies the rate at which players gain experience points."
+  },
+  {
+    "name": "PalCaptureRate",
+    "category": "General",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the success rate of capturing Pals."
+  },
+  {
+    "name": "PalSpawnNumRate",
+    "category": "General",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the number of Pals that spawn in the world."
+  },
+  {
+    "name": "PalDamageRateAttack",
+    "category": "Damage and Health",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the attack damage dealt by Pals."
+  },
+  {
+    "name": "PalDamageRateDefense",
+    "category": "Damage and Health",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the damage Pals take (defense modifier)."
+  },
+  {
+    "name": "PlayerDamageRateAttack",
+    "category": "Damage and Health",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the attack damage dealt by players."
+  },
+  {
+    "name": "PlayerDamageRateDefense",
+    "category": "Damage and Health",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the damage players take (defense modifier)."
+  },
+  {
+    "name": "PlayerAutoHPRegeneRate",
+    "category": "Damage and Health",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the rate at which players automatically regenerate health."
+  },
+  {
+    "name": "PlayerAutoHpRegeneRateInSleep",
+    "category": "Damage and Health",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the rate at which players regenerate health while sleeping."
+  },
+  {
+    "name": "PalAutoHPRegeneRate",
+    "category": "Damage and Health",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the rate at which Pals automatically regenerate health."
+  },
+  {
+    "name": "PalAutoHpRegeneRateInSleep",
+    "category": "Damage and Health",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the rate at which Pals regenerate health while in a Palbox."
+  },
+  {
+    "name": "PlayerStomachDecreaceRate",
+    "category": "Survival",
+    "type": "float",
+    "min": 0.1,
+    "max": 5.0,
+    "default": "1.000000",
+    "description": "Multiplies how quickly players get hungry (higher = get hungry faster)."
+  },
+  {
+    "name": "PlayerStaminaDecreaceRate",
+    "category": "Survival",
+    "type": "float",
+    "min": 0.1,
+    "max": 5.0,
+    "default": "1.000000",
+    "description": "Multiplies how quickly players lose stamina (higher = stamina depletes faster)."
+  },
+  {
+    "name": "PalStomachDecreaceRate",
+    "category": "Survival",
+    "type": "float",
+    "min": 0.1,
+    "max": 5.0,
+    "default": "1.000000",
+    "description": "Multiplies how quickly Pals get hungry (higher = get hungry faster)."
+  },
+  {
+    "name": "PalStaminaDecreaceRate",
+    "category": "Survival",
+    "type": "float",
+    "min": 0.1,
+    "max": 5.0,
+    "default": "1.000000",
+    "description": "Multiplies how quickly Pals lose stamina (higher = stamina depletes faster)."
+  },
+  {
+    "name": "BuildObjectDamageRate",
+    "category": "Building",
+    "type": "float",
+    "min": 0.1,
+    "max": 5.0,
+    "default": "1.000000",
+    "description": "Multiplies the damage dealt to player-built structures."
+  },
+  {
+    "name": "BuildObjectDeteriorationDamageRate",
+    "category": "Building",
+    "type": "float",
+    "min": 0.0,
+    "max": 5.0,
+    "default": "1.000000",
+    "description": "Multiplies the rate at which player-built structures deteriorate."
+  },
+  {
+    "name": "CollectionDropRate",
+    "category": "Collection",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the amount of resources dropped when harvesting."
+  },
+  {
+    "name": "CollectionObjectHpRate",
+    "category": "Collection",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the health of harvestable objects."
+  },
+  {
+    "name": "CollectionObjectRespawnSpeedRate",
+    "category": "Collection",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies how quickly harvestable objects respawn."
+  },
+  {
+    "name": "EnemyDropItemRate",
+    "category": "Collection",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the amount of items dropped by enemies."
+  },
+  {
+    "name": "DeathPenalty",
+    "category": "Multiplayer",
+    "type": "enum",
+    "options": [
+      "None",
+      "Item",
+      "ItemAndEquipment",
+      "All"
+    ],
+    "default": "All",
+    "description": "Sets what items are dropped on player death."
+  },
+  {
+    "name": "bEnablePlayerToPlayerDamage",
+    "category": "Multiplayer",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, players can damage each other (PvP)."
+  },
+  {
+    "name": "bEnableFriendlyFire",
+    "category": "Multiplayer",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, players can damage allied players or guild members."
+  },
+  {
+    "name": "bEnableInvaderEnemy",
+    "category": "Multiplayer",
+    "type": "boolean",
+    "default": "True",
+    "description": "If enabled, enemy NPCs will occasionally invade the player's base."
+  },
+  {
+    "name": "bEnableAimAssistPad",
+    "category": "Gameplay",
+    "type": "boolean",
+    "default": "True",
+    "description": "Enables aim assist for controller players."
+  },
+  {
+    "name": "bEnableAimAssistKeyboard",
+    "category": "Gameplay",
+    "type": "boolean",
+    "default": "False",
+    "description": "Enables aim assist for keyboard and mouse players."
+  },
+  {
+    "name": "BaseCampMaxNum",
+    "category": "BaseBuilding",
+    "type": "integer",
+    "min": 1,
+    "max": 512,
+    "default": "128",
+    "description": "Maximum number of base camps that can be built."
+  },
+  {
+    "name": "BaseCampWorkerMaxNum",
+    "category": "BaseBuilding",
+    "type": "integer",
+    "min": 1,
+    "max": 100,
+    "default": "15",
+    "description": "Maximum number of Pals that can be assigned to a single base camp."
+  },
+  {
+    "name": "DropItemMaxNum",
+    "category": "BaseBuilding",
+    "type": "integer",
+    "min": 100,
+    "max": 10000,
+    "default": "3000",
+    "description": "Maximum number of dropped items in the world."
+  },
+  {
+    "name": "DropItemAliveMaxHours",
+    "category": "BaseBuilding",
+    "type": "float",
+    "min": 0.1,
+    "max": 24.0,
+    "default": "1.000000",
+    "description": "How many hours dropped items remain in the world before despawning."
+  },
+  {
+    "name": "bAutoResetGuildNoOnlinePlayers",
+    "category": "Guild",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, guilds with no active players will automatically disband."
+  },
+  {
+    "name": "AutoResetGuildTimeNoOnlinePlayers",
+    "category": "Guild",
+    "type": "float",
+    "min": 1.0,
+    "max": 720.0,
+    "default": "72.000000",
+    "description": "Hours after which an inactive guild will disband."
+  },
+  {
+    "name": "GuildPlayerMaxNum",
+    "category": "Guild",
+    "type": "integer",
+    "min": 1,
+    "max": 100,
+    "default": "20",
+    "description": "Maximum number of players in a guild."
+  },
+  {
+    "name": "PalEggDefaultHatchingTime",
+    "category": "Gameplay",
+    "type": "float",
+    "min": 0.01,
+    "max": 10.0,
+    "default": "0.100000",
+    "description": "Multiplier for how quickly Pal eggs hatch (lower is faster)."
+  },
+  {
+    "name": "WorkSpeedRate",
+    "category": "BaseBuilding",
+    "type": "float",
+    "min": 0.1,
+    "max": 10.0,
+    "default": "1.000000",
+    "description": "Multiplies the work speed of Pals assigned to a base."
+  },
+  {
+    "name": "bIsMultiplay",
+    "category": "Server",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, the game is played in multiplayer mode."
+  },
+  {
+    "name": "bIsPvP",
+    "category": "Server",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, PvP is enabled on the server."
+  },
+  {
+    "name": "bCanPickupOtherGuildDeathPenaltyDrop",
+    "category": "Server",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, players can pick up death drops from players in other guilds."
+  },
+  {
+    "name": "bEnableNonLoginPenalty",
+    "category": "Server",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, there's a penalty for not logging in for a certain period."
+  },
+  {
+    "name": "bEnableFastTravel",
+    "category": "Server",
+    "type": "boolean",
+    "default": "True",
+    "description": "If enabled, players can use fast travel."
+  },
+  {
+    "name": "bIsStartLocationSelectByMap",
+    "category": "Server",
+    "type": "boolean",
+    "default": "True",
+    "description": "If enabled, players can select their starting location on the map."
+  },
+  {
+    "name": "bExistPlayerAfterLogout",
+    "category": "Server",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, player characters remain in the world after logging out."
+  },
+  {
+    "name": "bEnableDefenseOtherGuildPlayer",
+    "category": "Server",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, players can defend against other guild members."
+  },
+  {
+    "name": "CoopPlayerMaxNum",
+    "category": "Server",
+    "type": "integer",
+    "min": 1,
+    "max": 32,
+    "default": "6",
+    "description": "Maximum number of players in a co-op session."
+  },
+  {
+    "name": "ServerPlayerMaxNum",
+    "category": "Server",
+    "type": "integer",
+    "min": 1,
+    "max": 255,
+    "default": "32",
+    "description": "Maximum number of players on the server."
+  },
+  {
+    "name": "ServerName",
+    "category": "Server",
+    "type": "string",
+    "pattern": "^[\\w\\s\\-\\.]{1,50}$",
+    "default": "\"Palworld Server\"",
+    "description": "The name of the server displayed in the server list."
+  },
+  {
+    "name": "ServerDescription",
+    "category": "Server",
+    "type": "string",
+    "default": "\"\"",
+    "description": "A description of the server displayed in the server list."
+  },
+  {
+    "name": "AdminPassword",
+    "category": "Server",
+    "type": "string",
+    "default": "\"\"",
+    "description": "Password for admin access to the server."
+  },
+  {
+    "name": "ServerPassword",
+    "category": "Server",
+    "type": "string",
+    "default": "\"\"",
+    "description": "Password required to join the server."
+  },
+  {
+    "name": "PublicPort",
+    "category": "Server",
+    "type": "integer",
+    "min": 1,
+    "max": 65535,
+    "default": "8211",
+    "description": "Public port used by the server."
+  },
+  {
+    "name": "PublicIP",
+    "category": "Server",
+    "type": "string",
+    "pattern": "^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})?$",
+    "default": "\"\"",
+    "description": "Public IP address of the server."
+  },
+  {
+    "name": "RCONEnabled",
+    "category": "Server",
+    "type": "boolean",
+    "default": "False",
+    "description": "If enabled, RCON is allowed for remote server administration."
+  },
+  {
+    "name": "RCONPort",
+    "category": "Server",
+    "type": "integer",
+    "min": 1,
+    "max": 65535,
+    "default": "25575",
+    "description": "Port used for RCON."
+  },
+  {
+    "name": "Region",
+    "category": "Server",
+    "type": "string",
+    "default": "\"\"",
+    "description": "Region where the server is located."
+  },
+  {
+    "name": "bUseAuth",
+    "category": "Server",
+    "type": "boolean",
+    "default": "True",
+    "description": "If enabled, server uses authentication."
+  },
+  {
+    "name": "BanListURL",
+    "category": "Server",
+    "type": "string",
+    "pattern": "^(https?:\\/\\/[\\w\\-\\.\\/]+)?$",
+    "default": "\"https://api.palworldgame.com/api/banlist.txt\"",
+    "description": "URL to the ban list used by the server."
+  }
+]
