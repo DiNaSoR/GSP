@@ -297,56 +297,8 @@ class IniEditorApp(QMainWindow):
             }
         """
         
-        # Light theme specific styles
-        light_style = """
-            QTabBar::tab {
-                background-color: #f0f0f0;
-                color: #333333;
-                border: 1px solid #cccccc;
-            }
-            
-            QTabBar::tab:selected {
-                background-color: #ffffff;
-                border-bottom: none;
-            }
-            
-            QTabWidget::pane {
-                border: 1px solid #cccccc;
-            }
-            
-            QPushButton {
-                background-color: #3498db;
-                color: white;
-                border: none;
-            }
-            
-            QPushButton:disabled {
-                background-color: #cccccc;
-                color: #999999;
-            }
-            
-            QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox {
-                background-color: #ffffff;
-                color: #333333;
-                border: 1px solid #cccccc;
-            }
-            
-            QToolBar {
-                background-color: #f5f5f5;
-            }
-            
-            QStatusBar {
-                background-color: #f5f5f5;
-                color: #333333;
-            }
-            
-            #headerWidget {
-                background-color: #3498db;
-            }
-        """
-        
         # Choose which theme-specific style to use
-        theme_style = dark_style if is_dark else light_style
+        theme_style = dark_style
         
         # Write stylesheet to file
         try:
@@ -688,8 +640,6 @@ class IniEditorApp(QMainWindow):
         self.module_widget = module_widget
         self.module_layout = module_layout
         
-        # Debug log for settings data
-        print(f"Creating UI for {game_name} with {len(self.settings_data)} settings")
         
         # Only show header for non-Palworld games
         if game_name.lower() != "palworld":
@@ -1017,7 +967,7 @@ class IniEditorApp(QMainWindow):
                 # If no results found
                 if not matching_settings:
                     no_results = QLabel("No matching settings found.")
-                    no_results.setStyleSheet("color: #7f8c8d; font-style: italic;")
+                    no_results.setStyleSheet("color: #aaa; font-style: italic;")  # Lighter color for dark mode
                     results_container_layout.addWidget(no_results)
                     results_container_layout.addStretch(1)
                 else:
@@ -1038,14 +988,14 @@ class IniEditorApp(QMainWindow):
                         category_layout.setSpacing(5)
                         
                         category_header = QLabel(category)
-                        category_header.setStyleSheet("font-weight: bold; background-color: #2c3e50; color: white; padding: 5px; border-radius: 3px;")
+                        category_header.setStyleSheet("font-weight: bold; background-color: #1e2a38; color: white; padding: 5px; border-radius: 3px;")
                         category_layout.addWidget(category_header)
                         
                         # Add settings in this category
                         for setting in settings:
                             # Create a widget for this setting
                             setting_widget = QWidget()
-                            setting_widget.setStyleSheet("background-color: #f5f5f5; border-radius: 3px; padding: 5px;")
+                            setting_widget.setStyleSheet("background-color: #2d2d2d; border-radius: 3px; padding: 5px;")  # Dark background for dark mode
                             setting_layout = QGridLayout(setting_widget)
                             setting_layout.setContentsMargins(10, 10, 10, 10)
                             setting_layout.setHorizontalSpacing(15)
@@ -1053,7 +1003,7 @@ class IniEditorApp(QMainWindow):
                             
                             # Setting name
                             name_label = QLabel(setting.get('name', ''))
-                            name_label.setStyleSheet("font-weight: bold;")
+                            name_label.setStyleSheet("font-weight: bold; color: #ddd;")  # Light text for dark mode
                             setting_layout.addWidget(name_label, 0, 0)
                             
                             # Get the widget for this setting
@@ -1068,7 +1018,7 @@ class IniEditorApp(QMainWindow):
                             if setting.get('description'):
                                 desc_label = QLabel(setting.get('description'))
                                 desc_label.setWordWrap(True)
-                                desc_label.setStyleSheet("color: #7f8c8d; font-style: italic; font-size: 8pt;")
+                                desc_label.setStyleSheet("color: #aaa; font-style: italic; font-size: 8pt;")  # Lighter color for dark mode
                                 setting_layout.addWidget(desc_label, 1, 0, 1, 2)
                             
                             category_layout.addWidget(setting_widget)
@@ -1108,6 +1058,9 @@ class IniEditorApp(QMainWindow):
                     widget.setValue(0)
             widget.valueChanged.connect(lambda val, s=name: self.onSettingChanged(s, val))
             
+            # Apply dark mode styling
+            widget.setStyleSheet("background-color: #333; color: #ddd; border: 1px solid #555;")
+            
         elif setting_type == 'float':
             widget = QDoubleSpinBox()
             widget.setMinimumWidth(150)
@@ -1124,6 +1077,9 @@ class IniEditorApp(QMainWindow):
                     widget.setValue(0.0)
             widget.valueChanged.connect(lambda val, s=name: self.onSettingChanged(s, val))
             
+            # Apply dark mode styling
+            widget.setStyleSheet("background-color: #333; color: #ddd; border: 1px solid #555;")
+            
         elif setting_type == 'boolean':
             widget = QCheckBox("Enabled")
             if isinstance(current_value, str):
@@ -1131,6 +1087,9 @@ class IniEditorApp(QMainWindow):
             else:
                 widget.setChecked(bool(current_value))
             widget.stateChanged.connect(lambda state, s=name: self.onSettingChanged(s, state == Qt.CheckState.Checked))
+            
+            # Apply dark mode styling
+            widget.setStyleSheet("color: #ddd;")
             
         elif setting_type == 'enum':
             widget = QComboBox()
@@ -1143,12 +1102,18 @@ class IniEditorApp(QMainWindow):
                 widget.setCurrentText(current_value)
             widget.currentTextChanged.connect(lambda text, s=name: self.onSettingChanged(s, text))
             
+            # Apply dark mode styling
+            widget.setStyleSheet("background-color: #333; color: #ddd; border: 1px solid #555;")
+            
         else:  # Default to string
             widget = QLineEdit()
             widget.setMinimumWidth(150)
             if current_value:
                 widget.setText(str(current_value))
             widget.textChanged.connect(lambda text, s=name: self.onSettingChanged(s, text))
+            
+            # Apply dark mode styling
+            widget.setStyleSheet("background-color: #333; color: #ddd; border: 1px solid #555;")
         
         return widget
     
@@ -1204,10 +1169,10 @@ class IniEditorApp(QMainWindow):
         # Make layout more compact for Palworld
         if is_palworld:
             container_layout.setContentsMargins(0, 0, 0, 0)
-            container_layout.setSpacing(1)
+            container_layout.setSpacing(3)  # Slightly increased spacing
         else:
             container_layout.setContentsMargins(0, 0, 0, 0)
-            container_layout.setSpacing(2)
+            container_layout.setSpacing(4)  # Slightly increased spacing
         
         # Get current value from settings data - ensure we're getting the value correctly
         current_value = None
@@ -1298,20 +1263,21 @@ class IniEditorApp(QMainWindow):
         # Add the widget to the container
         container_layout.addWidget(widget)
         
-        # Add description if available
-        if description and not is_palworld:  # Skip for Palworld to save space
+        # Always add description if available (even for Palworld)
+        if description:
             desc_label = QLabel(description)
             desc_label.setWordWrap(True)
-            desc_label.setStyleSheet("color: #888; font-size: 9pt;")
+            desc_label.setStyleSheet("color: #aaa; font-size: 8pt; margin-top: 2px;")  # Lighter color for dark mode
             container_layout.addWidget(desc_label)
         
-        # Create reset button
-        reset_button = QPushButton("Reset")
+        # Create reset button with icon instead of text
+        reset_button = QToolButton()
+        reset_button.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload))
         reset_button.setToolTip(f"Reset to default: {setting.get('default', '')}")
-        reset_button.setMaximumWidth(60)
+        reset_button.setFixedSize(24, 24)  # Make it square and compact
         reset_button.clicked.connect(lambda checked, s=setting: self.resetSetting(s))
         
-        # Add widgets to layout
+        # Add widgets to layout with proper alignment
         layout.addWidget(label, row, 0, Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
         layout.addWidget(container, row, 1)
         layout.addWidget(reset_button, row, 2, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
@@ -1661,8 +1627,6 @@ class IniEditorApp(QMainWindow):
         # Get settings for this category
         settings = module.get_settings_by_category(category)
         
-        # Debug log
-        print(f"Showing settings for category {category} with {len(settings)} settings")
         
         # Create a form layout for the settings
         form_widget = QWidget()
