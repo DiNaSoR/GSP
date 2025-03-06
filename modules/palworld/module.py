@@ -175,13 +175,6 @@ class GameModule(BaseModule):
             # Create backup of original file
             self._create_backup(file_path)
             
-            # Debug log the parsed settings
-            log_path = os.path.join(self.module_dir, 'parse_log.txt')
-            with open(log_path, 'a') as f:
-                f.write(f"{datetime.now()} - Parsed {file_path}, found {len(settings_data)} settings\n")
-                for key, value in settings_data.items():
-                    f.write(f"  {key} = {value}\n")
-            
             return settings_data
             
         except Exception as e:
@@ -237,11 +230,6 @@ class GameModule(BaseModule):
             # Write the updated content
             with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(new_content)
-                
-            # Log successful save
-            log_path = os.path.join(self.module_dir, 'save_log.txt')
-            with open(log_path, 'a') as f:
-                f.write(f"{datetime.now()} - Successfully saved {file_path}\n")
                 
         except Exception as e:
             # Log the error

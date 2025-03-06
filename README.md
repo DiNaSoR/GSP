@@ -14,8 +14,7 @@
 [Supported Games](#🎯-supported-games) • 
 [Contributing](#👥-contributing)
 
-![Game Settings Editor](https://via.placeholder.com/800x450?text=Game+Settings+Editor+Screenshot)
-<sub><i>Screenshot coming soon - Application interface preview</i></sub>
+![Game Settings Editor](screenshot.png)
 
 </div>
 
