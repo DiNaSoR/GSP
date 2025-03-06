@@ -28,14 +28,14 @@ class IniEditorApp(QMainWindow):
         self.settings_data = {}
         self.ui_elements = {}
         self.edited = False
-        self.dark_mode = True  # Always set to True for dark mode
+        self.dark_mode = True  # Always dark mode
         
         # Initialize configparser for app settings
         self.app_settings = configparser.ConfigParser()
         self.settings_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app_settings.ini')
         self.load_app_settings()
         
-        # Setup theme - always dark
+        # Setup dark theme
         self.apply_dark_theme()
         
         # Apply stylesheet
@@ -78,76 +78,26 @@ class IniEditorApp(QMainWindow):
     def apply_dark_theme(self):
         """Apply dark theme to application"""
         dark_palette = QPalette()
-
-        # Set colors
-        dark_color = QColor(45, 45, 45)
-        disabled_color = QColor(127, 127, 127)
-        text_color = QColor(255, 255, 255)
-        highlight_color = QColor(42, 130, 218)
-        link_color = QColor(42, 130, 218)
         
-        # Set all color roles
-        dark_palette.setColor(QPalette.ColorRole.Window, dark_color)
-        dark_palette.setColor(QPalette.ColorRole.WindowText, text_color)
+        # Set dark color palette
+        dark_palette.setColor(QPalette.ColorRole.Window, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.ColorRole.WindowText, Qt.GlobalColor.white)
         dark_palette.setColor(QPalette.ColorRole.Base, QColor(25, 25, 25))
-        dark_palette.setColor(QPalette.ColorRole.AlternateBase, dark_color)
-        dark_palette.setColor(QPalette.ColorRole.ToolTipBase, text_color)
-        dark_palette.setColor(QPalette.ColorRole.ToolTipText, text_color)
-        dark_palette.setColor(QPalette.ColorRole.Text, text_color)
-        dark_palette.setColor(QPalette.ColorRole.Button, dark_color)
-        dark_palette.setColor(QPalette.ColorRole.ButtonText, text_color)
-        dark_palette.setColor(QPalette.ColorRole.Link, link_color)
-        dark_palette.setColor(QPalette.ColorRole.Highlight, highlight_color)
-        dark_palette.setColor(QPalette.ColorRole.HighlightedText, QColor(0, 0, 0))
+        dark_palette.setColor(QPalette.ColorRole.AlternateBase, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.ColorRole.ToolTipBase, Qt.GlobalColor.white)
+        dark_palette.setColor(QPalette.ColorRole.ToolTipText, Qt.GlobalColor.white)
+        dark_palette.setColor(QPalette.ColorRole.Text, Qt.GlobalColor.white)
+        dark_palette.setColor(QPalette.ColorRole.Button, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.ColorRole.ButtonText, Qt.GlobalColor.white)
+        dark_palette.setColor(QPalette.ColorRole.BrightText, Qt.GlobalColor.red)
+        dark_palette.setColor(QPalette.ColorRole.Link, QColor(42, 130, 218))
+        dark_palette.setColor(QPalette.ColorRole.Highlight, QColor(42, 130, 218))
+        dark_palette.setColor(QPalette.ColorRole.HighlightedText, Qt.GlobalColor.black)
         
-        # Disabled
-        dark_palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Text, disabled_color)
-        dark_palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.ButtonText, disabled_color)
-        dark_palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.WindowText, disabled_color)
-        
-        # Apply the palette
         self.setPalette(dark_palette)
     
-    def apply_light_theme(self):
-        """Reset to default light theme"""
-        self.setPalette(QApplication.style().standardPalette())
-    
-    def toggle_theme(self):
-        """Toggle between dark and light themes"""
-        self.dark_mode = not self.dark_mode
-        
-        if self.dark_mode:
-            self.apply_dark_theme()
-        else:
-            self.apply_light_theme()
-        
-        # Update stylesheet
-        self.load_stylesheet()
-        
-        # Recreate toolbar with updated theme icons
-        self.recreateToolBar()
-        
-        # Refresh UI elements
-        if self.current_module and self.current_file_path:
-            # Store current position in case we have a scroll area
-            scroll_pos = None
-            for child in self.findChildren(QScrollArea):
-                if child.isVisible():
-                    scroll_pos = child.verticalScrollBar().value()
-                    break
-            
-            # Recreate UI
-            self.clearMainLayout()
-            self.createModuleUI(self.current_module.get_game_name(), self.current_module)
-            
-            # Restore scroll position
-            if scroll_pos is not None:
-                for child in self.findChildren(QScrollArea):
-                    if child.isVisible():
-                        child.verticalScrollBar().setValue(scroll_pos)
-    
     def recreateToolBar(self):
-        """Recreate the toolbar with updated theme icons"""
+        """Recreate the toolbar with updated icons"""
         # Remove existing toolbar
         for toolbar in self.findChildren(QToolBar):
             self.removeToolBar(toolbar)
@@ -156,49 +106,41 @@ class IniEditorApp(QMainWindow):
         self.setupToolbar()
     
     def load_stylesheet(self):
-        """Load and apply CSS stylesheet"""
+        """Load or create application stylesheet"""
         style_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'styles')
-        os.makedirs(style_dir, exist_ok=True)
-        
-        # Always use dark stylesheet
         style_file = os.path.join(style_dir, 'dark_style.css')
+        
+        # Create styles directory if it doesn't exist
+        if not os.path.exists(style_dir):
+            os.makedirs(style_dir)
         
         # Create stylesheet if it doesn't exist
         if not os.path.exists(style_file):
             self.create_default_stylesheet(style_file)
         
-        # Load and apply stylesheet
+        # Apply stylesheet
         try:
             with open(style_file, 'r') as f:
                 self.setStyleSheet(f.read())
         except Exception as e:
             print(f"Error loading stylesheet: {str(e)}")
+            # Create and apply default stylesheet if loading fails
+            self.create_default_stylesheet(style_file)
+            with open(style_file, 'r') as f:
+                self.setStyleSheet(f.read())
     
     def create_default_stylesheet(self, style_file):
-        """Create default stylesheet files"""
-        is_dark = 'dark' in os.path.basename(style_file)
-        
-        # Common styles
+        """Create default stylesheet file"""
+        # Common styles for all themes
         common_style = """
-            QMainWindow {
-                border: none;
-            }
-            
-            QTabWidget::pane {
-                border: 1px solid #cccccc;
-                border-radius: 4px;
-                top: -1px;
-            }
-            
             QTabBar::tab {
                 padding: 8px 12px;
                 margin-right: 2px;
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
             }
             
-            QTabBar::tab:selected {
-                font-weight: bold;
+            QTabWidget::pane {
+                border-top: 1px solid palette(mid);
+                padding: 5px;
             }
             
             QPushButton {
@@ -249,7 +191,7 @@ class IniEditorApp(QMainWindow):
             }
         """
         
-        # Dark theme specific styles
+        # Dark theme styles
         dark_style = """
             QTabBar::tab {
                 background-color: #333333;
@@ -297,13 +239,10 @@ class IniEditorApp(QMainWindow):
             }
         """
         
-        # Choose which theme-specific style to use
-        theme_style = dark_style
-        
         # Write stylesheet to file
         try:
             with open(style_file, 'w') as f:
-                f.write(common_style + theme_style)
+                f.write(common_style + dark_style)
         except Exception as e:
             print(f"Error creating stylesheet: {str(e)}")
     
