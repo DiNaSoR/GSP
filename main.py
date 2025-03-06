@@ -98,12 +98,38 @@ class IniEditorApp(QMainWindow):
     
     def recreateToolBar(self):
         """Recreate the toolbar with updated icons"""
+        # Store current button states
+        save_enabled = False
+        export_enabled = False
+        import_enabled = False
+        close_file_enabled = False
+        
+        # Check if buttons exist and get their states
+        if hasattr(self, 'save_action'):
+            save_enabled = self.save_action.isEnabled()
+        if hasattr(self, 'export_action'):
+            export_enabled = self.export_action.isEnabled()
+        if hasattr(self, 'import_action'):
+            import_enabled = self.import_action.isEnabled()
+        if hasattr(self, 'close_file_action'):
+            close_file_enabled = self.close_file_action.isEnabled()
+        
         # Remove existing toolbar
         for toolbar in self.findChildren(QToolBar):
             self.removeToolBar(toolbar)
         
         # Create new toolbar
         self.setupToolbar()
+        
+        # Restore button states
+        if hasattr(self, 'save_action'):
+            self.save_action.setEnabled(save_enabled)
+        if hasattr(self, 'export_action'):
+            self.export_action.setEnabled(export_enabled)
+        if hasattr(self, 'import_action'):
+            self.import_action.setEnabled(import_enabled)
+        if hasattr(self, 'close_file_action'):
+            self.close_file_action.setEnabled(close_file_enabled)
     
     def load_stylesheet(self):
         """Load or create application stylesheet"""
@@ -291,19 +317,22 @@ class IniEditorApp(QMainWindow):
         # File menu
         file_menu = menu_bar.addMenu("&File")
         
-        open_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DirOpenIcon), "&Open INI", self)
-        open_action.setShortcut("Ctrl+O")
-        open_action.setStatusTip("Open an INI file")
-        open_action.triggered.connect(self.openFile)
-        file_menu.addAction(open_action)
+        # Use existing open action if available
+        if not hasattr(self, 'open_action'):
+            self.open_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DirOpenIcon), "&Open INI", self)
+            self.open_action.setShortcut("Ctrl+O")
+            self.open_action.setStatusTip("Open an INI file")
+            self.open_action.triggered.connect(self.openFile)
+        file_menu.addAction(self.open_action)
         
-        save_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogSaveButton), "&Save", self)
-        save_action.setShortcut("Ctrl+S")
-        save_action.setStatusTip("Save changes to INI file")
-        save_action.triggered.connect(self.saveFile)
-        save_action.setEnabled(False)
-        self.save_action = save_action
-        file_menu.addAction(save_action)
+        # Create save action if it doesn't exist
+        if not hasattr(self, 'save_action'):
+            self.save_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogSaveButton), "&Save", self)
+            self.save_action.setShortcut("Ctrl+S")
+            self.save_action.setStatusTip("Save changes to INI file")
+            self.save_action.triggered.connect(self.saveFile)
+            self.save_action.setEnabled(False)
+        file_menu.addAction(self.save_action)
         
         # Add close file action
         close_file_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogCloseButton), "&Close File", self)
@@ -320,15 +349,11 @@ class IniEditorApp(QMainWindow):
         export_action.setStatusTip("Export settings to JSON file")
         export_action.triggered.connect(self.exportToJson)
         export_action.setEnabled(False)
-        self.export_action = export_action
-        file_menu.addAction(export_action)
         
         import_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogOpenButton), "Import from J&SON", self)
         import_action.setStatusTip("Import settings from JSON file")
         import_action.triggered.connect(self.importFromJson)
         import_action.setEnabled(False)
-        self.import_action = import_action
-        file_menu.addAction(import_action)
         
         file_menu.addSeparator()
         
@@ -361,37 +386,38 @@ class IniEditorApp(QMainWindow):
         toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
         toolbar.setMovable(False)
         self.addToolBar(toolbar)
+
+        # Initialize save action first with proper connection
+        if not hasattr(self, 'save_action'):
+            self.save_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogSaveButton), "Save", self)
+            self.save_action.setStatusTip("Save changes to INI file")
+            self.save_action.triggered.connect(self.saveFile)  # Ensure direct connection
+            self.save_action.setEnabled(False)
+
+        # Create other actions if they don't exist
+        if not hasattr(self, 'open_action'):
+            self.open_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DirOpenIcon), "Open", self)
+            self.open_action.setStatusTip("Open an INI file")
+            self.open_action.triggered.connect(self.openFile)
         
-        # Add open action
-        open_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DirOpenIcon), "Open", self)
-        open_action.setStatusTip("Open an INI file")
-        open_action.triggered.connect(self.openFile)
-        toolbar.addAction(open_action)
-        
-        # Add save action
-        save_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogSaveButton), "Save", self)
-        save_action.setStatusTip("Save changes to INI file")
-        save_action.triggered.connect(self.saveFile)
-        save_action.setEnabled(False)
-        self.save_action = save_action
-        toolbar.addAction(save_action)
-        
+        if not hasattr(self, 'export_action'):
+            self.export_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogDetailedView), "Export", self)
+            self.export_action.setStatusTip("Export settings to JSON file")
+            self.export_action.triggered.connect(self.exportToJson)
+            self.export_action.setEnabled(False)
+
+        if not hasattr(self, 'import_action'):
+            self.import_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogStart), "Import", self)
+            self.import_action.setStatusTip("Import settings from JSON file")
+            self.import_action.triggered.connect(self.importFromJson)
+            self.import_action.setEnabled(False)
+
+        # Add actions to toolbar
+        toolbar.addAction(self.open_action)
+        toolbar.addAction(self.save_action)  # Use the class-level instance
         toolbar.addSeparator()
-        
-        # Add export/import actions
-        export_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogDetailedView), "Export", self)
-        export_action.setStatusTip("Export settings to JSON file")
-        export_action.triggered.connect(self.exportToJson)
-        export_action.setEnabled(False)
-        self.export_action = export_action
-        toolbar.addAction(export_action)
-        
-        import_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogStart), "Import", self)
-        import_action.setStatusTip("Import settings from JSON file")
-        import_action.triggered.connect(self.importFromJson)
-        import_action.setEnabled(False)
-        self.import_action = import_action
-        toolbar.addAction(import_action)
+        toolbar.addAction(self.export_action)
+        toolbar.addAction(self.import_action)
     
     def createSplashScreen(self):
         """Create the initial splash screen when no file is loaded"""
@@ -1121,9 +1147,8 @@ class IniEditorApp(QMainWindow):
             current_value = setting.get('default', '')
             # Store the default value in settings_data if not present
             self.settings_data[name] = current_value
-        
-        # Debug log
-        print(f"Setting up UI for {name} with value: {current_value}")
+    
+
         
         # Create appropriate widget based on setting type
         if setting_type == 'integer':
